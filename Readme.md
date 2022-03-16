@@ -26,20 +26,20 @@ Tracks the stock of local pharmacies to help people find their medicine easier
 #### Ubuntu
 
 ```sh
-git clone https://github.com/User/Repo.git
+git clone https://github.com/Gater73/LSTS.git
 pip3 install -r requirements.txt 
 ```
 
 #### Other distros
 
 ```sh
-git clone https://github.com/User/Repo.git
+git clone https://github.com/Gater73/LSTS.git
 pip install -r requirements.txt 
 ```
 
 #### Windows (Git Bash)
 ```sh
-git clone https://github.com/User/Repo.git
+git clone https://github.com/Gater73/LSTS.git
 pip install -r requirements.txt 
 ```
 
