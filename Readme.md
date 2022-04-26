@@ -9,6 +9,10 @@ Tracks the stock of local pharmacies to help people find their medicine easier
 - Spend less time searching for the right place to get your meds
 - Helps you use your time with more efficiency
 
+## Valuable information
+- The default username and password for UPA-SUL is "admin"
+- The default username and password for UPA-LESTE is "leste"
+
 ## Features
 
 - Automagically gets the latest availability data and prices
