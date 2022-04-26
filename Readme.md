@@ -1,7 +1,7 @@
 # LSTS
 ## _Local Stock Tracking System_
 
-[![N|Solid](https://www.python.org/static/community_logos/python-powered-w-100x40.png)](https://nodesource.com/products/nsolid)
+[![Python](https://www.python.org/static/community_logos/python-powered-w-100x40.png)](https://www.python.org/)
 
 Tracks the stock of local pharmacies to help people find their medicine easier
 
@@ -52,19 +52,28 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
-#### Other distros
+```sh
+python3 admin/main.py
+```
 
+#### Other distros
 ```sh
 python main.py
+```
+
+```sh
+python admin/main.py
 ```
 
 #### Windows
 > You can run LSTS in windows simply by running _start.bat_ in the repository folder you cloned to your PC.
 
+> Start _start-admin.bat_ to open the admin UI.
+
 ## License
 
-GPL v3
+[GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+[//]: # (Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
    [Name]: <Link>
