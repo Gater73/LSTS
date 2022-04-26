@@ -1,1 +1,3 @@
-tkinter
+bios
+hashlib
+sqlite3
