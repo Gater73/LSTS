@@ -3,10 +3,18 @@ from tkinter import ttk, messagebox
 from threading import Thread
 from time import sleep
 from datetime import date
-import bios, hashlib, sqlite3
+import bios, hashlib, sqlite3, os
 
 
 pathToConfig = "config.yml"
+
+def creditSpawn():
+    messagebox.showinfo("Credits", "Authors:\n  -Cadu Santana\n  -Gabriel Martins Nascimento\n  -Lucas Daniel\n  -Natanael Ferreira\n  -Vitória Sousa\n\nEspecial Thanks to the open source community!")
+
+
+def licenseSpawn():
+    os.system("start https://www.gnu.org/licenses/gpl-3.0.html" if os.name == "nt" else "xdg-open https://www.gnu.org/licenses/gpl-3.0.html")
+
 
 def deleteDb(remedioIdDel, tableStringDel):
     conn = sqlite3.connect("database.db")
@@ -187,13 +195,13 @@ def onClick():
 def ErrorThread(arg):
     print("Deauth")
     errorMessage = Label(loginWindow, text="Failed to login")
-    errorMessage.pack()
+    errorMessage.grid(row=4, column=0, columnspan=2, pady=15, padx=15)
     sleep(1)
-    errorMessage.pack_forget()
+    errorMessage.grid_forget()
 
 
 loginWindow = Tk()
-loginWindow.geometry("212x280")
+loginWindow.geometry("212x285")
 loginWindow.title("Login")
 loginWindow.protocol("WM_DELETE_WINDOW", on_closing)
 loginWindow.eval('tk::PlaceWindow . center')
@@ -209,6 +217,14 @@ editWindow.title("Edit - LSTS-Admin")
 editWindow.protocol("WM_DELETE_WINDOW", on_closing)
 editWindow.eval('tk::PlaceWindow . center')
 editWindow.withdraw()
+
+
+menubar = Menu(mainWindow)
+helpmenu = Menu(menubar, tearoff=0)
+helpmenu.add_command(label="License", command=licenseSpawn)
+helpmenu.add_command(label="Credits", command=creditSpawn)
+menubar.add_cascade(label="Information", menu=helpmenu)
+mainWindow.config(menu=menubar)
 
 
 myLabel = Label(loginWindow, text="Login Page")
@@ -227,7 +243,7 @@ passwordText.grid(row=3, column=0, columnspan=2, pady=15, padx=15)
 passwordText.insert('end', "Password")
 
 submitButton = Button(loginWindow, text="Login", command=onClick)
-submitButton.grid(row=4, column=0, columnspan=2, pady=15, padx=15)
+submitButton.grid(row=5, column=0, columnspan=2, pady=15, padx=15)
 
 userText.bind("<FocusIn>", focusClear)
 passwordText.bind("<FocusIn>", focusClear)
