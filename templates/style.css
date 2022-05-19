@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+
+:root {
+    --color0: #fff;
+    --color1: #EB0033; 
+    --color2: #AB0025;
+    --color3: #9E0021;
+    --color4: #85001D;
+    --color5: #5E0014;
+
+    --default-font: 'Open Sans', 'Helvetica Neue', sans-serif;
+    --highlight-font: 'Roboto Mono', monospace;
+    --highlight-font2: 'Roboto Condensed', sans-serif;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: var(--color0);
+    font-family: var(--default-font);
+}
+
+header {
+    background-image: linear-gradient(to right, var(--color3), var(--color4));
+    display: flex;
+    justify-content: space-between;
+    max-height: 12vh;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.671);
+}
+
+header img {
+    max-width: 150px;
+}
+
+.searcher {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    padding: 0px 15px; 
+    margin: 5px 0px;
+    height: 55px;  
+    }
+
+.searcher input {
+    flex: 1;
+    background: transparent;
+    border: 0;
+    color: var(--color0);
+    outline: none;   
+    font-size: 18px;
+}
+
+.searcher button img{
+    width: 25px;
+}
+
+.searcher button {
+    border: 0;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    background: rgba(245, 245, 245, 0.397);
+    cursor: pointer;
+}
+
+::placeholder {
+    color: rgba(245, 245, 245, 0.397);
+}
+
+nav {
+    display: block;
+    padding: 20px 0px;
+}
+
+nav a {
+    background-color: var(--color2);
+    color: var(--color0);
+    text-decoration: none;
+    border-radius: 10px;
+    margin: 0px 15px;
+    padding: 10px;
+    font-size: 18px;
+}
+
+nav a:hover {
+    background-color: var(--color5);
+}
+
+.bar {
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 5px 7px;
+}
+
+.menu-bar {  
+   padding: 5px 0px;
+   margin: 5px 0px;
+}
+
+@media (max-width: 870px) {
+
+nav a {
+    display: none;
+}
+
+}
+
+.top img {
+    width: 100%;
+}
+
+.table{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.table img {
+    width: 60%;
+    margin: 30px;
+}
+
+.about-us {
+    background-color: grey;
+    border-radius: 40px;
+    margin: 20px;
+}
+
+.about-us h2{
+    padding-left: 30px;
+}
+
+.about-us p {
+    padding: 20px;
+}
+
+footer{
+    background-image: linear-gradient(to right, var(--color3), var(--color4));
+    color: var(--color0);
+    display: flex;
+    justify-content: center;
+}
