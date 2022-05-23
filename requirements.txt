@@ -1,5 +1,4 @@
 bios
-sqlite3
 click
 colorama  
 Flask       
