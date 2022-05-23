@@ -1,5 +1,4 @@
 bios
-hashlib
 sqlite3
 click
 colorama  
