@@ -205,6 +205,7 @@ loginWindow.geometry("212x285")
 loginWindow.title("Login")
 loginWindow.protocol("WM_DELETE_WINDOW", on_closing)
 loginWindow.eval('tk::PlaceWindow . center')
+loginWindow.iconphoto(True, PhotoImage(file='icon.png'))
 
 mainWindow = Tk()
 mainWindow.title("LSTS-Admin")
