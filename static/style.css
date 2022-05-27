@@ -131,12 +131,13 @@ nav a {
 }
 
 .about-us {
-    background-color: grey;
+    background-color: #ebebeb;
     border-radius: 40px;
-    margin: 20px;
+    margin: 50px;
 }
 
 .about-us h2{
+    padding-top: 10px;
     padding-left: 30px;
 }
 
