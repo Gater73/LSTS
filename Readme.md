@@ -31,7 +31,6 @@ Tracks the stock of local pharmacies to help people find their medicine easier
 
 ```sh
 git clone https://github.com/Gater73/LSTS.git
-cd LSTS
 pip3 install -r requirements.txt 
 ```
 
@@ -39,14 +38,12 @@ pip3 install -r requirements.txt
 
 ```sh
 git clone https://github.com/Gater73/LSTS.git
-cd LSTS
 pip install -r requirements.txt 
 ```
 
 #### Windows (Git Bash)
 ```sh
 git clone https://github.com/Gater73/LSTS.git
-cd LSTS
 pip install -r requirements.txt 
 ```
 
@@ -56,7 +53,7 @@ pip install -r requirements.txt
 
 #### Ubuntu
 ```sh
-python3 site.py
+python3 main.py
 ```
 
 ```sh
@@ -65,7 +62,7 @@ python3 admin/main.py
 
 #### Other distros
 ```sh
-python site.py
+python main.py
 ```
 
 ```sh
