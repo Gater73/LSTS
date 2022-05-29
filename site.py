@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import sqlite3
 
 app = Flask(__name__)
@@ -21,18 +21,19 @@ def disconnectDb():
 def homepage():
     return render_template('index.html')
 
-@app.route('/drugs')
+@app.route('/units')
 def drugs():
-    return render_template('drugs.html')
-
-@app.route('/drugs/UPA-SUL')
-def drugsUpasul():
-    connectDb()
-    headings = ("Nome", "Quantidade", "ID")
-    cursor.execute("SELECT *, oid FROM UPASUL")
-    records = cursor.fetchall()
-    disconnectDb()
-    return render_template('drugsDisplay.html', headings=headings, data=records, title="UPA-SUL")
+    if request.args.get('unit'):
+        connectDb()
+        headings = ("Nome", "Quantidade", "ID")
+        unit = request.args.get('unit')
+        unit2 = unit.replace("-", "")
+        cursor.execute("SELECT *, oid FROM " + str(unit2))
+        records = cursor.fetchall()
+        disconnectDb()
+        return render_template('drugsDisplay.html', headings=headings, data=records, title=unit)
+    else:    
+        return render_template('drugs.html')
 
 @app.route('/drugs/UPA-LESTE')
 def drugsUpaleste():
