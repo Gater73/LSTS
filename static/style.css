@@ -151,3 +151,32 @@ footer{
     display: flex;
     justify-content: center;
 }
+
+.table {
+    margin: 1rem;
+}
+
+.table__title {
+    padding: 20px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    background-color: #AB0025;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table__row:nth-child(even) {
+    background-color: #e5e5e5;
+}
+
+.table__header {
+    text-align: left;
+    background-color: #AB0025;
+    color: white;
+}
+
+.table__cell{
+    padding: 8px;
+}
