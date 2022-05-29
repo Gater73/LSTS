@@ -13,14 +13,15 @@
         <div class="logo-top">
             <img src="../static/images/logo lsts.jpg" alt="project logo">
         </div>
-        <form action="" method="" class="searcher">
+        <form action="" method="GET" class="searcher">
+            <input type="hidden" name="unit" value="{{ title }}" />
             <input type="text" placeholder="Busque Aqui..." name="q">
-            <button type="submit"><img src="../static/images/search.png" alt="lupa"></button>
+            <button href="javascript:document.search.submit()"><img src="../static/images/search.png" alt="lupa"></button>
         </form>
         <nav>
             <a href="/">Home</a>
             <a href="/about">Sobre Nós</a>
-            <a href="/drugs">Remédios</a>
+            <a href="/units">Remédios</a>
         </nav>
         <div class="menu-bar">
             <div class="bar"></div>
