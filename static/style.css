@@ -26,6 +26,9 @@
 body {
     background-color: var(--color0);
     font-family: var(--default-font);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -150,6 +153,7 @@ footer{
     color: var(--color0);
     display: flex;
     justify-content: center;
+    margin-top: auto;
 }
 
 .table {
@@ -179,4 +183,27 @@ footer{
 
 .table__cell{
     padding: 8px;
+}
+
+.about-us img {
+    display: block;
+    width:65%;
+    margin: auto;
+}
+
+.medicine img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px 30px 0px 30px;
+}
+
+.top-instruction {
+    color: var(--color0);
+    background-color: var(--color3);
+    padding: 5px;
+}
+
+.necessity-margin-top {
+    margin-top: 20px;
 }
