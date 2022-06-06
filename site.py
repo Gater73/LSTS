@@ -25,7 +25,7 @@ def homepage():
 def drugs():
     if request.args.get('unit'):
         connectDb()
-        headings = ("Nome", "Quantidade", "ID", "Tipo")
+        headings = ("Nome", "Quantidade", "ID")
         unit = request.args.get('unit')
         unit2 = unit.replace("-", "")
         cursor.execute("SELECT *, oid FROM " + str(unit2))
