@@ -98,6 +98,12 @@ nav a:hover {
     background-color: var(--color5);
 }
 
+.menu-bar {  
+   padding: 5px 0px;
+   margin: 5px 0px;
+}
+
+@media (max-width: 870px) {
 .bar {
     width: 35px;
     height: 5px;
@@ -105,27 +111,25 @@ nav a:hover {
     margin: 5px 7px;
 }
 
-.menu-bar {  
-   padding: 5px 0px;
-   margin: 5px 0px;
-}
-
-@media (max-width: 870px) {
-
-nav a {
+.menu-itens {
     display: none;
 }
-
 }
 
 .top img {
     width: 100%;
 }
 
-.table{
+.banner {
     display: flex;
     justify-content: center;
     align-content: center;
+    background-color: var(--color4);
+    margin: 25px 0px;
+}
+
+.banner img {
+    padding: 37px;
 }
 
 .table img {
@@ -158,6 +162,9 @@ footer{
 
 .table {
     margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 .table__title {
@@ -181,7 +188,7 @@ footer{
     color: white;
 }
 
-.table__cell{
+.table__cell {
     padding: 8px;
 }
 
@@ -191,11 +198,11 @@ footer{
     margin: auto;
 }
 
-.medicine img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 30px 30px 0px 30px;
+.medicine {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 20px 0px 0px 5px;
 }
 
 .top-instruction {
