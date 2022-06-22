@@ -160,6 +160,13 @@ footer{
     margin-top: auto;
 }
 
+td:hover {border: 1px solid rgb(182, 0, 0);}
+
+th, td {
+    border: 2px none;
+    border-radius: 7px;
+}
+
 .table {
     margin: 1rem;
     display: flex;
@@ -179,7 +186,11 @@ footer{
 }
 
 .table__row:nth-child(even) {
-    background-color: #e5e5e5;
+    background-color: #e2e2e2;
+}
+
+.table__row:nth-child(odd) {
+    background-color: #eeeeee;
 }
 
 .table__header {
