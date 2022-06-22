@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../static/images/tryfav.ico" type="image/x-icon">
     <link rel="stylesheet" href="../static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>LSTS</title>
 </head>
 <body>
@@ -15,8 +16,8 @@
         </div>
         <form action="" method="GET" class="searcher">
             <input type="hidden" name="unit" value="{{ title }}" />
-            <input type="text" placeholder="Busque Aqui..." name="q">
-            <button href="javascript:document.search.submit()"><img src="../static/images/search.png" alt="lupa"></button>
+            <input onClick="console.log('Linux is better')" id="search" type="text" placeholder="Busque Aqui...">
+            <button disabled><img src="../static/images/search.png" alt="lupa"></button>
         </form>
         <nav class="menu-itens">
             <a href="/">Home</a>
@@ -33,7 +34,7 @@
         <section class="top">
             <h1 class="table__title">{{ title }}</h1>
             <h1 class="table__title">Remédios</h1>
-            <table class="table">
+            <table id="table" class="table">
                 <tr class="table__header">
                     {% for header in headings %}
                     <th class="table__cell"> {{ header }} </th>
@@ -58,5 +59,6 @@
     <footer>
         <p>&copy;Todos os direitos reservados </p>
     </footer>
+    <script src="static/search.js"></script>
 </body>
 </html>
