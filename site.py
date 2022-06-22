@@ -48,5 +48,9 @@ def drugsUpaleste():
 def about():
     return render_template('about.html')
 
+@app.route('/<path:path>')
+def static_file(path):
+    return app.send_static_file(path)
+
 if __name__ == "__main__":
     app.run(debug=True)
