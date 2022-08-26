@@ -1,255 +1,187 @@
-from tkinter import *
-from tkinter import ttk, messagebox
-from threading import Thread
-from time import sleep
 from datetime import date
 import bios, hashlib, sqlite3, os
 
 
 pathToConfig = "config.yml"
 
-def creditSpawn():
-    messagebox.showinfo("Credits", "Authors:\n  -Cadu Santana\n  -Gabriel Martins Nascimento\n  -Lucas Daniel\n  -Natanael Ferreira\n  -Vitória Sousa\n\nEspecial Thanks to the open source community!")
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 
-def licenseSpawn():
-    os.system("start https://www.gnu.org/licenses/gpl-3.0.html" if os.name == "nt" else "xdg-open https://www.gnu.org/licenses/gpl-3.0.html")
+def printTable(table):
+       # Connect to database
+       conn = sqlite3.connect("database.db")
+       
+       # Creates cursor
+       cursor = conn.cursor()
+       # Query database
+       cursor.execute("SELECT *, oid FROM " + table)
+       records = cursor.fetchall()
+       print_records = []
+       # Loop and add to Combobox
+       for record in records:
+           print_records.append(str(record[0]) + " - " + str(record[1]) + " - ID:" + str(record[2]))
+       # Print to screen
+       print(f"{bcolors.BOLD}======================================================{bcolors.WARNING}{table}{bcolors.ENDC}{bcolors.BOLD}======================================================{bcolors.ENDC}")
+       for i in print_records:
+              print(i)
+       print(f"{bcolors.BOLD}======================================================{'=' * len(table)}======================================================{bcolors.ENDC}")
+       # Closes connection with database
+       conn.close()
+       # Waits for input
+       input("")
 
 
-def deleteDb(remedioIdDel, tableStringDel):
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute("DELETE from " + tableStringDel + " WHERE oid=" + str(remedioIdDel))
-    messagebox.showinfo("Delete record", f"Deleted item with id {str(remedioIdDel)}")
-    comboBox2.set("")
-    cursor.execute("SELECT *, oid FROM " + str(comboBox1.get()).replace("-", ""))
-    records = cursor.fetchall()
-    print_records = []
-    for record in records:
-            print_records.append(str(record[0]) + " - " + str(record[1]) + " - ID:" + str(record[2]))
-    comboBox2.configure(values=print_records)
-    conn.commit()
-    conn.close()
+def addEntry(table):
+       # Connect to database
+       conn = sqlite3.connect("database.db")
+       # Creates cursor
+       cursor = conn.cursor()
+       # Asks user for entry info
+       nome = input("Digite o nome do medicamento: ")
+       qtd = input("Digite a quantidade do medicamento: ")
+       # Query database
+       cursor.execute("INSERT INTO " + table + "(remedio,quantidade) VALUES('"+ str(nome) + "', " + str(qtd) + ")")
+       print(f"Added for {str(nome)} with the value {str(qtd)}")
+       # Closes connection with database
+       conn.commit()
+       conn.close()
+       # Waits for input
+       input("")
 
 
-def saveDb(idRemedio, tableString, remedioNome, remedioQuant):
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute("UPDATE " + tableString + " SET remedio = '" + str(remedioNome) + "', quantidade = " + str(remedioQuant) + " WHERE oid = "+ str(idRemedio))
-    messagebox.showinfo("Edit record", f"Record for {str(remedioNome)} changed to {str(remedioQuant)}")
-    comboBox2.set("")
-    cursor.execute("SELECT *, oid FROM " + str(comboBox1.get()).replace("-", ""))
-    records = cursor.fetchall()
-    print_records = []
-    for record in records:
-            print_records.append(str(record[0]) + " - " + str(record[1]) + " - ID:" + str(record[2]))
-    comboBox2.configure(values=print_records)
-    conn.commit()
-    conn.close()
-    editWindow.withdraw()
+def editEntry(table):
+       # Connect to database
+       conn = sqlite3.connect("database.db")
+       # Creates cursor
+       cursor = conn.cursor()
+       # Asks user for entry info
+       printTable(table)
+       idParaEditar = input("Digite o id que desejas editar: ")
+       nome = input("Digite o novo nome do medicamento: ")
+       qtd = input("Digite a nova quantidade do medicamento: ")
+       # Query database
+       cursor.execute("UPDATE " + table + " SET remedio = '" + str(nome) + "', quantidade = " + str(qtd) + " WHERE oid = "+ str(idParaEditar))
+       print(f"Record for {str(nome)} changed to {str(qtd)}")
+       # Closes connection with database
+       conn.commit()
+       conn.close()
+       # Waits for input
+       input("")
 
 
-def saveDbAdd(tableStringAdd, remedioNomeAdd, remedioQuantAdd):
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO " + tableStringAdd + "(remedio,quantidade) VALUES('"+ str(remedioNomeAdd) + "', " + str(remedioQuantAdd) + ")")
-    messagebox.showinfo("Add record", f"Added for {str(remedioNomeAdd)} with the value {str(remedioQuantAdd)}")
-    comboBox2.set("")
-    cursor.execute("SELECT *, oid FROM " + str(comboBox1.get()).replace("-", ""))
-    records = cursor.fetchall()
-    print_records = []
-    for record in records:
-            print_records.append(str(record[0]) + " - " + str(record[1]) + " - ID:" + str(record[2]))
-    comboBox2.configure(values=print_records)
-    conn.commit()
-    conn.close()
-    addWindow.withdraw()
+def removeEntry(table):
+       # Connect to database
+       conn = sqlite3.connect("database.db")
+       # Creates cursor
+       cursor = conn.cursor()
+       # Asks user for entry info
+       printTable(table)
+       idParaRem = input("Digite o id que desejas remover: ")
+       # Query database
+       cursor.execute("DELETE from " + table + " WHERE oid=" + str(idParaRem))
+       print(f"Deleted item with id {str(idParaRem)}")
+       # Closes connection with database
+       conn.commit()
+       conn.close()
+       # Waits for input
+       input("")
 
 
-def editWindowOpen(comboBox2String, tableString):
-    editWindow = Tk()
-    editWindow.title("Edit - LSTS-Admin")
-    editWindow.eval('tk::PlaceWindow . center')
-    comboBox2String = str(comboBox2String.replace("ID:",""))
-    remedioList = comboBox2String.split(" - ")
-    remedioName = Label(editWindow, text="Remédio:")
-    remedioName.pack()
-    remedioNameEntry = Entry(editWindow)
-    remedioNameEntry.pack()
-    remedioQuant = Label(editWindow, text="Quantidade:")
-    remedioQuant.pack()
-    remedioQuantEntry = Entry(editWindow)
-    remedioQuantEntry.pack()
-    remedioNameEntry.delete(0, END)
-    remedioNameEntry.insert(0, str(remedioList[0]))
-    remedioQuantEntry.delete(0, END)
-    remedioQuantEntry.insert(0, str(remedioList[1]))
-    saveBtn = Button(editWindow, text="Save", command= lambda: saveDb(remedioList[2], tableString, remedioNameEntry.get(), remedioQuantEntry.get()))
-    saveBtn.pack()
-    return
+def loggedIn(username, unidade):
+       tableString = str(unidade).replace("-", "")
+       print(bcolors.FAIL +" /$$        /$$$$$$  /$$$$$$$$ /$$$$$$") 
+       print("| $$       /$$__  $$|__  $$__//$$__  $$")
+       print("| $$      | $$  \__/   | $$  | $$  \__/")
+       print("| $$      |  $$$$$$    | $$  |  $$$$$$ ")
+       print("| $$       \____  $$   | $$   \____  $$")
+       print("| $$       /$$  \ $$   | $$   /$$  \ $$")
+       print("| $$$$$$$$|  $$$$$$/   | $$  |  $$$$$$/")
+       print("|________/ \______/    |__/   \______/ ")
+       print("" + bcolors.ENDC)
+       print(f"Unidade: {bcolors.BOLD}{unidade}{bcolors.ENDC}")
+       print(f"Authenticated as {bcolors.BOLD}{username}{bcolors.ENDC} in {bcolors.BOLD}{date.today()}{bcolors.ENDC}")
+       print("")
+       print("Options:")
+       print(bcolors.BOLD +"print  - Imprimir tabela")
+       print(bcolors.BOLD + bcolors.OKGREEN + "add    - Adicionar" + bcolors.ENDC)
+       print(bcolors.BOLD + bcolors.OKBLUE + "edit   - Editar" + bcolors.ENDC)
+       print(bcolors.BOLD + bcolors.FAIL + "rem    - Remover" + bcolors.ENDC)
+       print(bcolors.BOLD + "exit - Sair/Deslogar" + bcolors.ENDC)
+       print("")
+       escolha = input(">")
+       if escolha == "print":
+              printTable(tableString)
+              loggedIn(username, unidade)
+       elif escolha == "add":
+              addEntry(tableString)
+              loggedIn(username, unidade)
+       elif escolha == "edit":
+              editEntry(tableString)
+              loggedIn(username, unidade)
+       elif escolha == "rem":
+              removeEntry(tableString)
+              loggedIn(username, unidade)
 
 
-def addWindowOpen(comboBox2StringAdd, tableStringAdd):
-    addWindow = Tk()
-    addWindow.title("Add - LSTS-Admin")
-    addWindow.eval('tk::PlaceWindow . center')
-    comboBox2StringAdd = str(comboBox2StringAdd.replace("ID:",""))
-    remedioListAdd = comboBox2StringAdd.split(" - ")
-    remedioNameAdd = Label(addWindow, text="Remédio:")
-    remedioNameAdd.pack()
-    remedioNameEntryAdd = Entry(addWindow)
-    remedioNameEntryAdd.pack()
-    remedioQuantAdd = Label(addWindow, text="Quantidade:")
-    remedioQuantAdd.pack()
-    remedioQuantEntryAdd = Entry(addWindow)
-    remedioQuantEntryAdd.pack()
-    remedioNameEntryAdd.delete(0, END)
-    remedioQuantEntryAdd.delete(0, END)
-    saveBtnAdd = Button(addWindow, text="Add records", command= lambda: saveDbAdd(tableStringAdd, remedioNameEntryAdd.get(), remedioQuantEntryAdd.get()))
-    saveBtnAdd.pack()
-    return
 
+def askLogin():
+        while True:
+              os.system("cls" if os.name == "nt" else "clear")
+              print(bcolors.FAIL +".......................................")
+              print(".......................................")
+              print(".......................................")
+              print("..............&&&&&&...................")
+              print("..........&&&&&&&&&&&&&&...............")
+              print("......&&&&&&&&&&&&&&&&&&&&&&...........")
+              print("......&&&&&&&&&&&&&&&&&&&&&&...........")
+              print("......&&&&&&&&&&&&&&&&&&&&&&&&&&@@@@...")
+              print("......&&&&&&&&&&&&&&&............@@....")
+              print("......&&&&&&&&&&&&&&&&.........&@,.....")
+              print(".......&&&&&&&&&&&&&&&&&......&&.......")
+              print("...........&&&&&&&&&&&&&&...&&&........")
+              print("................&&......&&/&&..........")
+              print("..........................&&...........")
+              print(".......................................")
+              print("......................................." + bcolors.ENDC)
+              print("")
+              print("Digite a unidade...")
+              print(f"{bcolors.BOLD}'exit'{bcolors.ENDC} para sair - {bcolors.BOLD}'credits'{bcolors.ENDC} para ver créditos - {bcolors.BOLD}'license'{bcolors.ENDC} para abrir a licença")
+              unidade = input("> ")
+              if unidade == "exit":
+                     exit(0)
+              elif unidade == "credits":
+                     print("Credits", "Authors:\n  -Cadu Santana\n  -Gabriel Martins Nascimento\n  -Lucas Daniel\n  -Natanael Ferreira\n  -Vitória Sousa\n\nEspecial Thanks to the open source community!")
+                     input()
+                     askLogin()
+              elif unidade == "license":
+                     os.system("start https://www.gnu.org/licenses/gpl-3.0.html" if os.name == "nt" else "xdg-open https://www.gnu.org/licenses/gpl-3.0.html > /dev/null")
+                     askLogin()
+              print("Username")
+              user = input("> ")
+              print("Password")
+              password = input("> ")
+              userNameHash = hashlib.sha256(user.encode())
+              passwordHash = hashlib.sha256(password.encode())
+              configData = bios.read(pathToConfig)
+              userNameHashed = configData[unidade]["username"]
+              passwordHashed = configData[unidade]["password"]
+              if userNameHash.hexdigest() == userNameHashed and passwordHash.hexdigest() == passwordHashed:
+                     os.system("cls" if os.name == "nt" else "clear")
+                     loggedIn(user, unidade)
 
-def reloadDb():
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute("SELECT *, oid FROM " + str(comboBox1.get()).replace("-", ""))
-    records = cursor.fetchall()
-    print_records = []
-    for record in records:
-            print_records.append(str(record[0]) + " - " + str(record[1]) + " - ID:" + str(record[2]))
-    conn.close()
-    print(print_records)
-    comboBox2.set("")
-    comboBox2.configure(values=print_records)
-    
+              else:
+                     print("Usuário ou Senha incorretos!")
+                     input("Pressione qualquer tecla para continuar...")
+                     askLogin()
 
-def focusClear(event):
-    event.widget.delete(0, END)
-
-def on_closing():
-    loginWindow.destroy()
-    mainWindow.destroy()
-    editWindow.destroy()
-
-def onClick():
-    if comboBox1.get() != "":
-        unidade = comboBox1.get()
-        configData = bios.read(pathToConfig)
-        userName = configData[unidade]["username"]
-        password = configData[unidade]["password"]
-    else:
-        messagebox.showerror(title="Error", message="Must set the unit...")
-        return
-    userNameHash = hashlib.sha256(userText.get().encode())
-    passwordHash = hashlib.sha256(passwordText.get().encode())
-    if userNameHash.hexdigest() == userName and passwordHash.hexdigest() == password:
-        print(f"Authenticated as {userText.get()} in {date.today()}")
-        loginWindow.withdraw()
-        mainWindow.deiconify()
-        welcomeMessage = Label(mainWindow, text=f"Welcome {userText.get()}")
-        welcomeMessage.grid(row=0, column=0, columnspan=3, padx=15, pady=(15, 0))
-
-        # TAKES '-' OUT OF UPA-SUL
-        tableString = str(comboBox1.get()).replace("-", "")
-
-        # Connect to database
-        conn = sqlite3.connect("database.db")
-        
-        # Creates cursor
-        cursor = conn.cursor()
-
-        # Query database
-        cursor.execute("SELECT *, oid FROM " + tableString)
-        records = cursor.fetchall()
-        print_records = []
-
-        # Loop and add to Combobox
-        for record in records:
-            print_records.append(str(record[0]) + " - " + str(record[1]) + " - ID:" + str(record[2]))
-
-        # Create UI elements
-        comboBox2.configure(values=print_records)
-
-        labelEmpty1 = Label(mainWindow, text=" ", pady=5, padx=5)
-        labelEmpty1.grid(row=3, column=2, columnspan=1)
-
-        editBtn = Button(mainWindow, text="Edit record", pady=5, padx=5, command= lambda: editWindowOpen(comboBox2.get(), tableString))
-        editBtn.grid(row=4, column=0, columnspan=1)
-
-        addBtn = Button(mainWindow, text="Add record", pady=5, padx=5, command= lambda: addWindowOpen(comboBox2.get(), tableString))
-        addBtn.grid(row=4, column=1, columnspan=1)
-
-        deleteBtn = Button(mainWindow, text="Delete record", pady=5, padx=5, command= lambda: deleteDb(int(record[2]), tableString))
-        deleteBtn.grid(row=4, column=2, columnspan=1)
-
-        labelEmpty = Label(mainWindow, text=" ", pady=5, padx=5)
-        labelEmpty.grid(row=5, column=2, columnspan=1)
-
-        conn.close()
-
-    else:
-        thread = Thread(target = ErrorThread, args = (10, ))
-        thread.start()
-
-def ErrorThread(arg):
-    print("Deauth")
-    errorMessage = Label(loginWindow, text="Failed to login")
-    errorMessage.grid(row=4, column=0, columnspan=2, pady=15, padx=15)
-    sleep(1)
-    errorMessage.grid_forget()
-
-
-loginWindow = Tk()
-loginWindow.geometry("212x285")
-loginWindow.title("Login")
-loginWindow.protocol("WM_DELETE_WINDOW", on_closing)
-loginWindow.eval('tk::PlaceWindow . center')
-loginWindow.iconphoto(True, PhotoImage(file='icon.png'))
-
-mainWindow = Tk()
-mainWindow.title("LSTS-Admin")
-mainWindow.protocol("WM_DELETE_WINDOW", on_closing)
-mainWindow.eval('tk::PlaceWindow . center')
-mainWindow.withdraw()
-
-editWindow = Tk()
-editWindow.title("Edit - LSTS-Admin")
-editWindow.protocol("WM_DELETE_WINDOW", on_closing)
-editWindow.eval('tk::PlaceWindow . center')
-editWindow.withdraw()
-
-
-menubar = Menu(mainWindow)
-helpmenu = Menu(menubar, tearoff=0)
-helpmenu.add_command(label="License", command=licenseSpawn)
-helpmenu.add_command(label="Credits", command=creditSpawn)
-menubar.add_cascade(label="Information", menu=helpmenu)
-mainWindow.config(menu=menubar)
-
-
-myLabel = Label(loginWindow, text="Login Page")
-myLabel.grid(row=0, column=0, columnspan=2, pady=15, padx=15)
-
-comboBox1 = ttk.Combobox(loginWindow, values=["UPA-SUL", "UPA-LESTE"])
-comboBox1.grid(row=1, column=0, columnspan=2, pady=15, padx=15)
-
-userText = Entry(loginWindow)
-userText.grid(row=2, column=0, columnspan=2, pady=15, padx=15)
-userText.insert('end', "User")
-
-
-passwordText = Entry(loginWindow)
-passwordText.grid(row=3, column=0, columnspan=2, pady=15, padx=15)
-passwordText.insert('end', "Password")
-
-submitButton = Button(loginWindow, text="Login", command=onClick)
-submitButton.grid(row=5, column=0, columnspan=2, pady=15, padx=15)
-
-userText.bind("<FocusIn>", focusClear)
-passwordText.bind("<FocusIn>", focusClear)
-
-comboBox2 = ttk.Combobox(mainWindow)
-comboBox2.grid(row=2, column=0, columnspan=3, padx=15, pady=5)
-
-loginWindow.mainloop()
+askLogin()
