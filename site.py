@@ -32,7 +32,11 @@ def drugs():
         records = cursor.fetchall()
         disconnectDb()
         return render_template('drugsDisplay.html', headings=headings, data=records, title=unit)
-    else:    
+    else:
+        connectDb()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        unidades = cursor.fetchall()
+        disconnectDb()
         return render_template('drugs.html')
 
 @app.route('/drugs/UPA-LESTE')
