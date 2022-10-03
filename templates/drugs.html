@@ -34,10 +34,10 @@
             <img src="../static/images/medicine-capsules01.png" alt="foto de remédios">
         </section>
         <section style="align-items: center;">
+            {% for i in unidades %}
             <h1 style="color: white;">-</h1>
-            <a style="cursor: pointer; font-size: 60px;" class="table__title" onclick="window.location.href = '/units?unit=UPA-SUL';">UPA-SUL</a>
-            <h1 style="color: white;">-</h1>
-            <a style="cursor: pointer; font-size: 60px;" class="table__title" onclick="window.location.href = '/units?unit=UPA-LESTE';">UPA-LESTE</a>
+            <a style="cursor: pointer; font-size: 60px;" class="table__title" onclick="window.location.href = '/units?unit={{i[0]}}';">{{i[0]}}</a>
+            {% endfor %}
         </section>
     </main>
     <footer class="necessity-margin-top">
