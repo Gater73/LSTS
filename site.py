@@ -1,19 +1,32 @@
 from flask import Flask, render_template, request
-import sqlite3
+import mysql.connector
+from mysql.connector import Error
 
 app = Flask(__name__)
 
+confpath = "db.conf"
+
 def connectDb():
     global conn, cursor
-    conn = sqlite3.connect("admin/database.db")
-    cursor = conn.cursor()
-    print("DB connected")
+    with open(confpath, "r") as dbconffile:
+                lines = [line.rstrip('\n') for line in dbconffile]
+                print(lines)
+    conn = mysql.connector.connect(host=lines[0],
+                                        port=lines[1],
+                                        database=lines[2],
+                                        user=lines[3],
+                                        password=lines[4])
+    if conn.is_connected():
+                        db_Info = conn.get_server_info()
+                        print("Connected to MySQL Server version ", db_Info)
+                        cursor = conn.cursor()
 
 
 def disconnectDb():
     global conn, cursor
-    conn.commit()
+    cursor.execute("commit;")
     conn.close()
+    cursor.close()
     print("DB disconnected")
 
 
@@ -28,13 +41,13 @@ def drugs():
         headings = ("Nome", "Quantidade", "ID")
         unit = request.args.get('unit')
         unit2 = unit.replace("-", "")
-        cursor.execute("SELECT *, oid FROM " + str(unit2))
+        cursor.execute("SELECT * FROM " + str(unit2))
         records = cursor.fetchall()
         disconnectDb()
         return render_template('drugsDisplay.html', headings=headings, data=records, title=unit)
     else:
         connectDb()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        cursor.execute("show tables;")
         unidades = cursor.fetchall()
         disconnectDb()
         return render_template('drugs.html', unidades=unidades)
