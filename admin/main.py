@@ -1,8 +1,10 @@
 from datetime import date
-import bios, hashlib, sqlite3, os
+import bios, hashlib, os, mysql.connector
+from mysql.connector import Error
 
 
 pathToConfig = "config.yml"
+confpath = "../db.conf"
 
 
 class bcolors:
@@ -17,35 +19,54 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
+def connectDb():
+    global conn, cursor
+    with open(confpath, "r") as dbconffile:
+                lines = [line.rstrip('\n') for line in dbconffile]
+                print(lines)
+    conn = mysql.connector.connect(host=lines[0],
+                                        port=lines[1],
+                                        database=lines[2],
+                                        user=lines[3],
+                                        password=lines[4])
+    if conn.is_connected():
+                        db_Info = conn.get_server_info()
+                        print("Connected to MySQL Server version ", db_Info)
+                        cursor = conn.cursor()
+
+
+def disconnectDb():
+    global conn, cursor
+    cursor.execute("commit;")
+    conn.close()
+    cursor.close()
+    print("DB disconnected")
+
+
 def printTable(table):
-       # Connect to database
-       conn = sqlite3.connect("database.db")
-       
-       # Creates cursor
-       cursor = conn.cursor()
+       # Connect to MySQL Server
+       connectDb()
        # Query database
-       cursor.execute("SELECT *, oid FROM " + table)
+       cursor.execute("SELECT * FROM " + table)
        records = cursor.fetchall()
        print_records = []
        # Loop and add to Combobox
        for record in records:
-           print_records.append(str(record[0]) + " - " + str(record[1]) + " - ID:" + str(record[2]))
+           print_records.append(str(record[2]) + " - " + str(record[1]) + " - ID:" + str(record[0]))
        # Print to screen
        print(f"{bcolors.BOLD}======================================================{bcolors.WARNING}{table}{bcolors.ENDC}{bcolors.BOLD}======================================================{bcolors.ENDC}")
        for i in print_records:
               print(i)
        print(f"{bcolors.BOLD}======================================================{'=' * len(table)}======================================================{bcolors.ENDC}")
        # Closes connection with database
-       conn.close()
+       disconnectDb()
        # Waits for input
        input("")
 
 
 def addEntry(table):
        # Connect to database
-       conn = sqlite3.connect("database.db")
-       # Creates cursor
-       cursor = conn.cursor()
+       connectDb()
        # Asks user for entry info
        nome = input("Digite o nome do medicamento: ")
        qtd = input("Digite a quantidade do medicamento: ")
@@ -53,46 +74,61 @@ def addEntry(table):
        cursor.execute("INSERT INTO " + table + "(remedio,quantidade) VALUES('"+ str(nome) + "', " + str(qtd) + ")")
        print(f"Added for {str(nome)} with the value {str(qtd)}")
        # Closes connection with database
-       conn.commit()
-       conn.close()
+       disconnectDb()
        # Waits for input
        input("")
 
 
 def editEntry(table):
        # Connect to database
-       conn = sqlite3.connect("database.db")
-       # Creates cursor
-       cursor = conn.cursor()
+       connectDb()
+       # PrintTable without disconnectDb()
+       cursor.execute("SELECT * FROM " + table)
+       records = cursor.fetchall()
+       print_records = []
+       # Loop and add to dict
+       for record in records:
+           print_records.append(str(record[2]) + " - " + str(record[1]) + " - ID:" + str(record[0]))
+       # Print to screen
+       print(f"{bcolors.BOLD}======================================================{bcolors.WARNING}{table}{bcolors.ENDC}{bcolors.BOLD}======================================================{bcolors.ENDC}")
+       for i in print_records:
+              print(i)
+       print(f"{bcolors.BOLD}======================================================{'=' * len(table)}======================================================{bcolors.ENDC}")
        # Asks user for entry info
-       printTable(table)
        idParaEditar = input("Digite o id que desejas editar: ")
        nome = input("Digite o novo nome do medicamento: ")
        qtd = input("Digite a nova quantidade do medicamento: ")
        # Query database
-       cursor.execute("UPDATE " + table + " SET remedio = '" + str(nome) + "', quantidade = " + str(qtd) + " WHERE oid = "+ str(idParaEditar))
+       cursor.execute("UPDATE " + table + " SET remedio = '" + str(nome) + "', quantidade = " + str(qtd) + " WHERE id = "+ str(idParaEditar))
        print(f"Record for {str(nome)} changed to {str(qtd)}")
        # Closes connection with database
-       conn.commit()
-       conn.close()
+       disconnectDb()
        # Waits for input
        input("")
 
 
 def removeEntry(table):
        # Connect to database
-       conn = sqlite3.connect("database.db")
-       # Creates cursor
-       cursor = conn.cursor()
+       connectDb()
+       # PrintTable without disconnectDb()
+       cursor.execute("SELECT * FROM " + table)
+       records = cursor.fetchall()
+       print_records = []
+       # Loop and add to dict
+       for record in records:
+           print_records.append(str(record[2]) + " - " + str(record[1]) + " - ID:" + str(record[0]))
+       # Print to screen
+       print(f"{bcolors.BOLD}======================================================{bcolors.WARNING}{table}{bcolors.ENDC}{bcolors.BOLD}======================================================{bcolors.ENDC}")
+       for i in print_records:
+              print(i)
+       print(f"{bcolors.BOLD}======================================================{'=' * len(table)}======================================================{bcolors.ENDC}")
        # Asks user for entry info
-       printTable(table)
        idParaRem = input("Digite o id que desejas remover: ")
        # Query database
-       cursor.execute("DELETE from " + table + " WHERE oid=" + str(idParaRem))
+       cursor.execute("DELETE from " + table + " WHERE id=" + str(idParaRem))
        print(f"Deleted item with id {str(idParaRem)}")
        # Closes connection with database
-       conn.commit()
-       conn.close()
+       disconnectDb()
        # Waits for input
        input("")
 
