@@ -4,6 +4,7 @@ from mysql.connector import Error
 
 app = Flask(__name__)
 
+#Path to file containing database connection and authentication information
 confpath = "db.conf"
 
 def connectDb():
