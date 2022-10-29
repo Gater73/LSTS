@@ -225,3 +225,60 @@ th, td {
 .necessity-margin-top {
     margin-top: 20px;
 }
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: var(--color3);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    border-radius: 15px;
+    filter: drop-shadow(0 0 0.75rem crimson);
+}
+  
+.sidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: var(--color0);
+    display: block;
+    transition: 0.3s;
+}
+  
+.sidebar a:hover {
+    color: #b6b6b6;
+}
+  
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+  
+.openbtn {
+    background-color: var(--color2);
+    color: var(--color0);
+    text-decoration: none;
+    border-style: none;
+    border-radius: 10px;
+    margin: 0px 15px;
+    padding: 10px;
+    padding-bottom: 4px;
+    font-size: 18px;
+}
+  
+.openbtn:hover {
+    background-color: var(--color5);
+}
+  
+@media screen and (max-height: 450px) {
+    .sidebar {padding-top: 15px;}
+    .sidebar a {font-size: 18px;}
+}
