@@ -20,9 +20,10 @@
             <button disabled><img src="../static/images/search.png" alt="lupa"></button>
         </form>
         <nav class="menu-itens">
-            <a href="/">Home</a>
-            <a href="/about">Sobre Nós</a>
-            <a href="/units">Remédios</a>
+            <a href="/">Home</a> <!-- 仚 Home -->
+            <a href="/about">Sobre Nós</a> <!-- ⎎ Sobre Nós -->
+            <a href="/units">Remédios</a> <!-- ✚ Remédios -->
+            <button class="openbtn" onclick="openNav()">☰ Lista</button> 
         </nav>
         <div class="menu-bar">
             <div class="bar"></div>
@@ -31,6 +32,26 @@
         </div>
     </header>
     <main>
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+            <div>
+                <a href="#">ibuprofeno</a>
+                <button class="openbtn"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button>
+            </div>
+            <div>
+                <a href="#">dipirona</a>
+                <button class="openbtn"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button>
+            </div>
+            <div>
+                <a href="#">isotretinoina</a>
+                <button class="openbtn"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button>
+            </div>
+            <div>
+                <a href="#">dorflex</a>
+                <button class="openbtn"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button>
+            </div>
+            <h2 style="color: white; text-align: center; top: 10px;">Work in Progress</h2>
+        </div>
         <section class="top">
             <h1 class="table__title">{{ title }}</h1>
             <h1 class="table__title">Remédios</h1>
@@ -60,5 +81,14 @@
         <p>&copy;Todos os direitos reservados </p>
     </footer>
     <script src="static/search.js"></script>
+<script>
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+}
+</script>
 </body>
 </html>
