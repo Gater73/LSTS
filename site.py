@@ -52,15 +52,6 @@ def drugs():
         disconnectDb()
         return render_template('drugs.html', unidades=unidades)
 
-@app.route('/drugs/UPA-LESTE')
-def drugsUpaleste():
-    connectDb()
-    headings = ("Nome", "Quantidade", "ID")
-    cursor.execute("SELECT *, oid FROM UPALESTE")
-    records = cursor.fetchall()
-    disconnectDb()
-    return render_template('drugsDisplay.html', headings=headings, data=records, title="UPA-LESTE")
-
 @app.route('/about')
 def about():
     return render_template('about.html')
