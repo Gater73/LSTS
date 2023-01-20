@@ -23,7 +23,7 @@
             <a href="/">仚 Home</a> <!-- 仚 Home -->
             <a href="/about">⎎ Sobre Nós</a> <!-- ⎎ Sobre Nós -->
             <a href="/units">✚ Remédios</a> <!-- ✚ Remédios -->
-            <button class="openbtn" onclick="openNav()">☰ Lista</button> 
+            <button class="openbtn" onclick="openNav1()">☰ Lista</button> 
         </nav>
         <div class="menu-bar">
             <div class="bar"></div>
@@ -32,25 +32,10 @@
         </div>
     </header>
     <main>
-        <div id="mySidebar" class="sidebar">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-            <div>
-                <a href="#">ibuprofeno</a>
-                <button class="openbtn"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button>
-            </div>
-            <div>
-                <a href="#">dipirona</a>
-                <button class="openbtn"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button>
-            </div>
-            <div>
-                <a href="#">isotretinoina</a>
-                <button class="openbtn"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button>
-            </div>
-            <div>
-                <a href="#">dorflex</a>
-                <button class="openbtn"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button>
-            </div>
-            <h2 style="color: white; text-align: center; top: 10px;">Work in Progress</h2>
+        <div id="list" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav1()">×</a>
+            <h4 style="color: white; text-align: center; top: 10px; padding-left: 5px; padding-right: 5px; padding-bottom: 10px;">Click sobre o nome do remédio que deseja adicionar na lista:</h4>
+            <img style="border-radius: 10px; display: block; margin-left: auto; margin-right: auto;" width=200 height=100 src="../static/images/ux.GIF"/>
         </div>
         <section class="top">
             <h1 class="table__title">{{ title }}</h1>
@@ -64,7 +49,7 @@
                 {% for row in data %}
                 <tr class="table__row">
                     {% for cell in row %}
-                    <td class="table__cell">{{ cell }}</td>
+                    <td {% if loop.index == middle_column %}class="middle-column table__cell"{% else %}class="table__cell"{% endif %}>{{ cell }}</td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
@@ -82,13 +67,31 @@
     </footer>
     <script src="static/search.js"></script>
 <script>
-function openNav() {
-  document.getElementById("mySidebar").style.width = "250px";
+function openNav1() {
+  document.getElementById("list").style.width = "250px";
 }
 
-function closeNav() {
-  document.getElementById("mySidebar").style.width = "0";
+function closeNav1() {
+  document.getElementById("list").style.width = "0";
 }
+
+$(document).ready(function() {
+    // Add a click event handler to the table cells
+    $('#table td.middle-column').click(function() {
+      // Get the text content of the clicked cell
+      var text = $(this).text();
+      
+      // Add a new list item containing the text to the list
+      $('#list').append('<div><a href="#">' + text + '</a><button class="openbtn delete"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button></div>');
+    });
+    
+    // Add a click event handler to the delete buttons
+    $(document).on('click', '.delete', function() {
+      // Remove the parent list item of the clicked delete button
+      $(this).parent().remove();
+    });
+  });
+
 </script>
 </body>
 </html>

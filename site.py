@@ -39,13 +39,14 @@ def homepage():
 def drugs():
     if request.args.get('unit'):
         connectDb()
+        middle_column = 2
         headings = ("ID", "Nome", "Quantidade")
         unit = request.args.get('unit')
         unit2 = unit.replace("-", "")
         cursor.execute("SELECT * FROM " + str(unit2))
         records = cursor.fetchall()
         disconnectDb()
-        return render_template('drugsDisplay.html', headings=headings, data=records, title=unit)
+        return render_template('drugsDisplay.html', headings=headings, data=records, title=unit, middle_column=middle_column)
     else:
         connectDb()
         cursor.execute("show tables;")
