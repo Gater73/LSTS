@@ -36,6 +36,7 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav1()">×</a>
             <h4 style="color: white; text-align: center; top: 10px; padding-left: 5px; padding-right: 5px; padding-bottom: 10px;">Click sobre o nome do remédio que deseja adicionar na lista:</h4>
             <img style="border-radius: 10px; display: block; margin-left: auto; margin-right: auto;" width=200 height=100 src="../static/images/ux.GIF"/>
+            <button style="margin-top: 25px; margin-left: 20%;"class="openbtn download-btn"><b>Download CSV</b></button>
         </div>
         <section class="top">
             <h1 class="table__title">{{ title }}</h1>
@@ -82,7 +83,7 @@ $(document).ready(function() {
       var text = $(this).text();
       
       // Add a new list item containing the text to the list
-      $('#list').append('<div><a href="#">' + text + '</a><button class="openbtn delete"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button></div>');
+      $('#list').append('<div class="added"><a>' + text + '</a><button class="openbtn delete"><img width=20 height=20 src="https://cdn.iconscout.com/icon/free/png-256/delete-737-475058.png"></img></button></div>');
     });
     
     // Add a click event handler to the delete buttons
@@ -91,6 +92,37 @@ $(document).ready(function() {
       $(this).parent().remove();
     });
   });
+
+
+
+// Get the button element that will trigger the download
+var downloadBtn = document.querySelector('.download-btn');
+
+// Add a click event listener to the button
+downloadBtn.addEventListener('click', function() {
+  var divs = document.querySelectorAll('div.added');
+  var values = [];
+  for (var i = 0; i < divs.length; i++) {
+  var a = divs[i].querySelector('a');
+  var value = a.innerHTML;
+  values.push(value);
+  }
+  // Create a CSV file using the values array
+  var csv = 'data:text/csv;charset=utf-8,';
+  values.forEach(function(row) {
+    csv += row + '\r\n';
+  });
+
+  // Create a temporary link element to trigger the download
+  var link = document.createElement('a');
+  link.setAttribute('href', encodeURI(csv));
+  link.setAttribute('download', 'my-data.csv');
+  document.body.appendChild(link);
+
+  // Click the link to start the download
+  link.click();
+});
+
 
 </script>
 </body>
