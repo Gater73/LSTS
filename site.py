@@ -27,7 +27,6 @@ with open("admin.cred", "r") as admin:
     if "\n" in admin_pass:
         admin_pass = admin_pass.replace("\n","")
 
-
 def connectDb():
     global conn, cursor
     with open(confpath, "r") as dbconffile:
