@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Page</title>
+    <link rel="shortcut icon" href="../static/images/tryfav.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="static/images/logosmall.png" width="28" height="28">
+        </a>
+    
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+    
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link has-text-white">
+              Unidades
+            </a>
+
+            <div class="navbar-dropdown">
+              {% for i in g.unidades %}
+              <a class="navbar-item">
+                {{i[0]}}<a class="button is-danger " href="/delunit?unit={{i[0]}}">A</a>
+                
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+    
+        <div class="navbar-end">
+          <div class="navbar-item">
+            Logged in as {{g.name}}
+          </div>
+          <div class="navbar-item">
+            <div class="buttons">
+              <a id=logout class="button is-info">
+                <strong>Logout</strong>
+              </a>
+              <a onClick="window.location.reload();" class="button is-light">
+                Refresh
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section style="background-color: #222222;" class="hero is-fullheight-with-navbar">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="notification is-info is-rounded">
+            <h2 class="title has-text-centered is-small">Adicionar Unidade:</h2>
+          </div>
+          <form action="/add_unit" method="post">
+            <div class="field">
+              <label class="label has-text-white">Nome</label>
+              <div class="control">
+                <input class="input" name="name" type="text" placeholder="Nome Aqui">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">Login</label>
+              <div class="control">
+                <input class="input" name="login" type="text" placeholder="Login Aqui">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">Password</label>
+              <div class="control">
+                <input class="input" name="password" type="text" placeholder="Senha Aqui">
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <button type="submit" class="button is-link">Adicionar</button>
+              </div>
+            </div>
+            <div>
+              {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                      {% for message in messages %}
+                         <div class="field">
+                            <article class="message is-success">
+                                <div class="message-body">
+                                  {{ message }}
+                                </div>
+                            </article>
+                      {% endfor %}
+                  {% endif %}
+              {% endwith %}
+            </div>
+          </form>
+        </div>
+    </section>
+  </body>
+  <script type=text/javascript>
+    $(function() {
+      $('a#logout').on('click', function(e) {
+        e.preventDefault()
+        $.getJSON('/logout',
+            function(data) {
+          //do nothing
+        });
+        window.location.href = "/login";
+        return false;
+      });
+    });
+</script>
+</html>

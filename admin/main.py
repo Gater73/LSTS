@@ -134,7 +134,7 @@ def removeEntry(table):
 
 
 def loggedIn(username, unidade):
-       tableString = str(unidade).replace("-", "")
+       tableString = str(unidade)
        print(bcolors.FAIL +" /$$        /$$$$$$  /$$$$$$$$ /$$$$$$") 
        print("| $$       /$$__  $$|__  $$__//$$__  $$")
        print("| $$      | $$  \__/   | $$  | $$  \__/")

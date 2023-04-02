@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Page</title>
+    <link rel="shortcut icon" href="../static/images/tryfav.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="static/images/logosmall.png" width="28" height="28">
+        </a>
+    
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+    
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          
+        </div>
+    
+        <div class="navbar-end">
+          <div class="navbar-item">
+            Logged in as {{g.name}}
+          </div>
+          <div class="navbar-item">
+            <div class="buttons">
+              <a id=logout class="button is-danger">
+                <strong>Logout</strong>
+              </a>
+              <a onClick="window.location.reload();" class="button is-light">
+                Refresh
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section style="background-color: #222222;" class="hero is-fullheight-with-navbar">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="notification is-danger is-rounded">
+            <h2 class="title has-text-centered is-small">Dados Registrados:</h2>
+            <div class="notification is-dark">
+                {% for i in session['print_records'] %}
+                    <div style="margin: 20px;">
+                        <button class="js-modal-trigger button is-danger" data-target="modal-js-example">
+                            Menu Edição
+                            </button>
+                                {{i}}<br>
+                    </div>
+                {% endfor %}
+            </div>
+          </div>
+          <button class="js-modal-trigger button is-danger" data-target="modal-js-example">
+            Menu Edição
+          </button>
+          <form action="/add_unit" method="post">
+            <div class="field">
+              <label class="label has-text-white">Nome</label>
+              <div class="control">
+                <input class="input" name="name" type="text" placeholder="Nome Aqui">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">Login</label>
+              <div class="control">
+                <input class="input" name="login" type="text" placeholder="Login Aqui">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">Password</label>
+              <div class="control">
+                <input class="input" name="password" type="text" placeholder="Senha Aqui">
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <button type="submit" class="button is-danger">Adicionar</button>
+              </div>
+            </div>
+            <div>
+              {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                      {% for message in messages %}
+                         <div class="field">
+                            <article class="message is-success">
+                                <div class="message-body">
+                                  {{ message }}
+                                </div>
+                            </article>
+                      {% endfor %}
+                  {% endif %}
+              {% endwith %}
+            </div>
+          </form>
+        </div>
+    </section>
+    <div id="modal-js-example" class="modal is-dark">
+        <div class="modal-background"></div>
+      
+        <div class="modal-content">
+          <div class="box">
+            <iframe scrolling="no" class="is-fluid" width="100%" height="500" src="https://bulma.io/">
+                <p>Seu navegador não suporta iframe, por favor use base Chrome ou Firefox</p>
+            </iframe>
+          </div>
+        </div>
+      
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+  </body>
+  <script type=text/javascript>
+    $(function() {
+      $('a#logout').on('click', function(e) {
+        e.preventDefault()
+        $.getJSON('/logout',
+            function(data) {
+          //do nothing
+        });
+        window.location.href = "/login";
+        return false;
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById(modal);
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
+</script>
+</html>
