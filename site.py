@@ -152,22 +152,29 @@ def delunit():
 
 @app.route('/add_unit', methods=['GET', 'POST'])
 def addunit():
-    if request.method == "POST":
-        name = request.form['name']
-        login = request.form['login']
-        password = request.form['password']
-        connectDb()
-        cursor.execute(f"CREATE TABLE `{name}` (`id` MEDIUMINT(255) NOT NULL AUTO_INCREMENT,`remedio` VARCHAR(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,`quantidade` INT NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB;")
-        disconnectDb()
-        #LOgin
-        with open(pathToConfig, "a") as configFile:
-            configFile.write("\n" + name + ":")
-            loginHash = hashlib.sha256(login.encode())
-            configFile.write("\n    username: " + loginHash.hexdigest() + "\n")
-            passHash = hashlib.sha256(password.encode())
-            configFile.write("    password: " + passHash.hexdigest())
-        flash("Adicionado com successo!")
-        return redirect(url_for('adminpanel'))
+    try:
+        if session['is_admin'] == 'yes':
+            if request.method == "POST":
+                name = request.form['name']
+                login = request.form['login']
+                password = request.form['password']
+                connectDb()
+                cursor.execute(f"CREATE TABLE `{name}` (`id` MEDIUMINT(255) NOT NULL AUTO_INCREMENT,`remedio` VARCHAR(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,`quantidade` INT NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB;")
+                disconnectDb()
+                #LOgin
+                with open(pathToConfig, "a") as configFile:
+                    configFile.write("\n" + name + ":")
+                    loginHash = hashlib.sha256(login.encode())
+                    configFile.write("\n    username: " + loginHash.hexdigest() + "\n")
+                    passHash = hashlib.sha256(password.encode())
+                    configFile.write("    password: " + passHash.hexdigest())
+                flash("Adicionado com successo!")
+                return redirect(url_for('adminpanel'))
+            else:
+                return "You are not allowed to add units"
+    except:
+        return "You are not allowed to add units"
+    
 
 @app.route('/admin-panel')
 def adminpanel():
