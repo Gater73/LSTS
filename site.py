@@ -174,9 +174,8 @@ def addunit():
                 return redirect(url_for('adminpanel'))
             else:
                 return "You are not allowed to add units"
-    except:
-        return "You are not allowed to add units"
-    
+    except Exception as e:
+        return "Error while adding unit: " + str(e)
 
 @app.route('/admin-panel')
 def adminpanel():
