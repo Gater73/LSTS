@@ -4,6 +4,7 @@ from mysql.connector import Error
 
 app = Flask(__name__)
 app.config['SESSION_COOKIE_HTTPONLY'] = False
+app.config['SESSION_COOKIE_SECURE'] = True
 app.secret_key = "SomeReallySecureSecretKey"
 pathToConfig = "admin/config.yml"
 
