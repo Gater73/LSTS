@@ -7,4 +7,3 @@ Jinja2
 MarkupSafe
 Werkzeug
 mysql-connector-python
-pyopenssl
